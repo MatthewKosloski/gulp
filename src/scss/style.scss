@@ -1,0 +1,32 @@
+/*******************************************************************************
+ * CUSTOM RESETS && IMPORTS
+ ******************************************************************************/
+
+@import "normalize";
+@import "reset";
+@import "foundation-visibility";
+@import "mixins";
+@import "grid";
+@import "breakpoints";
+@import "bourbon/bourbon";
+@import "modules/modules";
+
+/*******************************************************************************
+ * AUTHOR'S BASE
+ ******************************************************************************/
+
+html,
+body {
+    background-color: #fff;
+    color: #444;
+    font: 112.5%/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    @include breakpoint(md) {font-size: 105%;}
+    @include breakpoint(sm) {font-size: 100%;}
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: normal;
+}
+
+/*******************************************************************************
+ * AUTHOR'S STYLES
+ ******************************************************************************/
