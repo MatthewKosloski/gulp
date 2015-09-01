@@ -2,13 +2,13 @@
  * CUSTOM RESETS && IMPORTS
  ******************************************************************************/
 
+@import "../lib/bourbon/app/assets/stylesheets/bourbon";
+
 @import "normalize";
 @import "reset";
-@import "foundation-visibility";
 @import "mixins";
 @import "grid";
 @import "breakpoints";
-@import "bourbon/bourbon";
 @import "modules/modules";
 
 /*******************************************************************************
@@ -30,3 +30,7 @@ body {
 /*******************************************************************************
  * AUTHOR'S STYLES
  ******************************************************************************/
+
+p {
+	font-size: rem(18);
+}
