@@ -1,11 +1,11 @@
 var gulp = require("gulp"),
-  sass = require("gulp-sass"),
-  htmlmin = require("gulp-htmlmin"),
-  watch = require("gulp-watch"),
-  uglify = require("gulp-uglify"),
-  concat = require("gulp-concat"),
-  bower = require("gulp-bower"),
-  minifyCss = require("gulp-minify-css");
+    sass = require("gulp-sass"),
+    htmlmin = require("gulp-htmlmin"),
+    watch = require("gulp-watch"),
+    uglify = require("gulp-uglify"),
+    concat = require("gulp-concat"),
+    bower = require("gulp-bower"),
+    minifyCss = require("gulp-minify-css");
 
 var paths = {
   html: {
