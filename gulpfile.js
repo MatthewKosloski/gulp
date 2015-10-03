@@ -100,6 +100,7 @@ gulp.task("concatJS", function() {
   return gulp.src(paths.js.src)
     .pipe(sourcemaps.init())
     .pipe(concat(paths.concatJS.concat))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.js.dest));
 });
 
@@ -108,7 +109,6 @@ gulp.task("uglifyJS", ["concatJS"], function() {
   return gulp.src(paths.uglifyJS.src)
     .pipe(uglify())
     .pipe(rename(paths.uglifyJS.new))
-    .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.js.dest));
 });
 
