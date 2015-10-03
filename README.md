@@ -1,5 +1,5 @@
 # gulp
-Starting point with Gulp.
+My starting point with Gulp for static websites.
 
 ## Installation
 1. Download the repo's ZIP file.
