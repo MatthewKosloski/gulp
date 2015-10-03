@@ -3,9 +3,8 @@
  ******************************************************************************/
 
 @import "./bower_components/bourbon/app/assets/stylesheets/bourbon";
+@import "./bower_components/normalize-scss/normalize";
 
-
-@import "normalize";
 @import "reset";
 @import "mixins";
 @import "grid";
@@ -19,7 +18,7 @@
 html,
 body {
     background-color: #fff;
-    color: #444;
+    color: #222;
     font: 112.5%/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
     @include breakpoint(md) {font-size: 105%;}
     @include breakpoint(sm) {font-size: 100%;}
@@ -32,6 +31,3 @@ body {
  * AUTHOR'S STYLES
  ******************************************************************************/
 
-p {
-	font-size: rem(18);
-}
