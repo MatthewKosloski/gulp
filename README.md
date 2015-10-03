@@ -1,5 +1,5 @@
 # gulp
-My starting point with Gulp for static websites.
+My starting point with [Gulp](http://gulpjs.com/) for static websites.
 
 ## Installation
 1. Download the repo's ZIP file.
