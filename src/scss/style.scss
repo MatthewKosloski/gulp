@@ -2,6 +2,8 @@
  * CUSTOM RESETS && IMPORTS
  ******************************************************************************/
 
+@import "variables";
+
 @import "./bower_components/bourbon/app/assets/stylesheets/bourbon";
 @import "./bower_components/normalize-scss/normalize";
 
@@ -17,9 +19,9 @@
 
 html,
 body {
-    background-color: #fff;
+    background-color: $white;
     color: #222;
-    font: 112.5%/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font: 112.5%/1.5 $helvetica;
     @include breakpoint(md) {font-size: 105%;}
     @include breakpoint(sm) {font-size: 100%;}
     -webkit-font-smoothing: antialiased;

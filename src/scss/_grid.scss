@@ -3,7 +3,7 @@
   margin: 0 auto;
   margin-top: 0;
   margin-bottom: 0;
-  max-width: 960px;
+  max-width: $row-width;
   position: relative; }
   .row:before, .row:after {
     content: " ";
