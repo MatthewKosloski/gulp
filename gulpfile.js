@@ -6,6 +6,7 @@ var gulp = require("gulp"),
     concat = require("gulp-concat"),
     bower = require("gulp-bower"),
     minifyCss = require("gulp-minify-css"),
+    sourcemaps = require("gulp-sourcemaps"),
     uncss = require("gulp-uncss"),
     rename = require("gulp-rename");
 
@@ -85,7 +86,9 @@ gulp.task("minifyHTML", function() {
 // compiles sass to css
 gulp.task("sassToCSS", function() {
   return gulp.src(paths.sassToCSS.src)
+    .pipe(sourcemaps.init())
     .pipe(sass().on("error", sass.logError))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.sassToCSS.dest));
 });
 
@@ -109,7 +112,9 @@ gulp.task("minifyCSS", function() {
 // concat javascript
 gulp.task("concatJS", function() {
   return gulp.src(paths.js.src)
+    .pipe(sourcemaps.init())
     .pipe(concat(paths.concatJS.concat))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.js.dest));
 });
 
