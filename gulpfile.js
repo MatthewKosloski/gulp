@@ -7,9 +7,18 @@ var gulp = require("gulp"),
     bower = require("gulp-bower"),
     minifyCss = require("gulp-minify-css"),
     sourcemaps = require("gulp-sourcemaps"),
+    uncss = require('gulp-uncss'),
     rename = require("gulp-rename");
 
 var paths = {
+  unCSS: {
+    ignore: [],
+    src: {
+      html: "./src/*.html",
+      css: "./www/css/style.css"
+    },
+    dest: "./www/css/"
+  },
   moveAssets: {
     src: "./assets/**/*",
     dest: "www"
@@ -87,8 +96,15 @@ gulp.task("sassToCSS", function() {
     .pipe(gulp.dest(paths.sassToCSS.dest));
 });
 
+// removed unused css rules
+gulp.task("unCSS", ["sassToCSS"], function() {
+  return gulp.src(paths.unCSS.src.css)
+    .pipe(uncss({html:paths.unCSS.src.html,ignore:paths.unCSS.ignore}))
+    .pipe(gulp.dest(paths.scss.dest));
+});
+
 // minify css
-gulp.task("minifyCSS", ["sassToCSS"], function() {
+gulp.task("minifyCSS", ["sassToCSS", "unCSS"], function() {
   return gulp.src(paths.minifyCSS.src)
     .pipe(minifyCss())
     .pipe(rename(paths.minifyCSS.new))
@@ -114,11 +130,12 @@ gulp.task("uglifyJS", ["concatJS"], function() {
 
 // watch for changes
 gulp.task("watch", function() {
+  gulp.watch(paths.moveAssets.src, ["moveAssets"]);
   gulp.watch(paths.html.src, ["minifyHTML"]);
   gulp.watch(paths.scss.watch, ["minifyCSS"]);
   gulp.watch(paths.js.src, ["concatJS"]);
 });
 
 // The default task (called when you run `gulp` from cli)
-gulp.task("build", ["moveAssets", "bower", "minifyHTML", "sassToCSS", "minifyCSS", "concatJS", "uglifyJS"]); /*compresses html, css, js*/
-gulp.task("default", ["moveAssets", "bower", "moveHTML", "sassToCSS", "concatJS", "watch"]);
+gulp.task("build", ["moveAssets", "bower", "minifyHTML", "sassToCSS", "unCSS", "minifyCSS", "concatJS", "uglifyJS"]); /*compresses html, css, js*/
+gulp.task("default", ["moveAssets", "bower", "moveHTML", "sassToCSS", "unCSS", "concatJS", "watch"]);
