@@ -6,19 +6,10 @@ var gulp = require("gulp"),
     concat = require("gulp-concat"),
     bower = require("gulp-bower"),
     minifyCss = require("gulp-minify-css"),
-    sourcemaps = require("gulp-sourcemaps"),
     uncss = require("gulp-uncss"),
     rename = require("gulp-rename");
 
 var paths = {
-  unCSS: {
-    ignore: [],
-    src: {
-      html: "./src/*.html",
-      css: "./www/css/style.css"
-    },
-    dest: "./www/css/"
-  },
   moveAssets: {
     src: "./assets/**/*",
     dest: "www"
@@ -27,16 +18,23 @@ var paths = {
     src: "./src/scss/style.scss",
     dest: "./www/css"
   },
+  // don't include './' in front in unCSSTask
+  unCSSTask: {
+    src: "www/css/style.css",
+    html: "src/*.html",
+    dest: "www/css"
+  },
   minifyCSS: {
     src: "./www/css/style.css",
-    new: "script.min.css"
+    newName: "style.min.css",
+    dest: "./www/css"
   },
   concatJS: {
     concat: "script.js"
   },
   uglifyJS: {
     src: "./www/js/script.js",
-    new: "script.min.js"
+    newName: "script.min.js"
   },
   bower: {
     dest: "src/lib"
@@ -54,10 +52,7 @@ var paths = {
     ]
   },
   js: {
-    src: [
-      "./src/lib/jquery/dist/jquery.js",
-      "./src/js/**/*.js"
-    ],
+    src: [],
     dest: "./www/js/"
   }
 };
@@ -80,43 +75,41 @@ gulp.task("bower", function() {
     .pipe(gulp.dest(paths.bower.dest));
 });
 
-// minify html 
+// minifies html 
 gulp.task("minifyHTML", function() {
   return gulp.src(paths.html.src)
     .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest(paths.html.dest));
 });
 
-// sass => css
+// compiles sass to css
 gulp.task("sassToCSS", function() {
   return gulp.src(paths.sassToCSS.src)
-    .pipe(sourcemaps.init())
     .pipe(sass().on("error", sass.logError))
-    .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.sassToCSS.dest));
 });
 
-// removed unused css rules
+// removes unused css rules
 gulp.task("unCSS", ["sassToCSS"], function() {
-  return gulp.src(paths.unCSS.src.css)
-    .pipe(uncss({html:paths.unCSS.src.html,ignore:paths.unCSS.ignore}))
-    .pipe(gulp.dest(paths.scss.dest));
+  return gulp.src(paths.unCSSTask.src)
+    .pipe(uncss({
+      html: paths.unCSSTask.html
+    }))
+    .pipe(gulp.dest(paths.unCSSTask));
 });
 
-// minify css
-gulp.task("minifyCSS", ["sassToCSS", "unCSS"], function() {
+// minifies css
+gulp.task("minifyCSS", function() {
   return gulp.src(paths.minifyCSS.src)
     .pipe(minifyCss())
-    .pipe(rename(paths.minifyCSS.new))
-    .pipe(gulp.dest(paths.scss.dest));
+    .pipe(rename(paths.minifyCss.newName))
+    .pipe(gulp.dest(paths.minifyCss.dest));
 });
 
 // concat javascript
 gulp.task("concatJS", function() {
   return gulp.src(paths.js.src)
-    .pipe(sourcemaps.init())
     .pipe(concat(paths.concatJS.concat))
-    .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.js.dest));
 });
 
@@ -124,7 +117,7 @@ gulp.task("concatJS", function() {
 gulp.task("uglifyJS", ["concatJS"], function() {
   return gulp.src(paths.uglifyJS.src)
     .pipe(uglify())
-    .pipe(rename(paths.uglifyJS.new))
+    .pipe(rename(paths.uglifyJS.newName))
     .pipe(gulp.dest(paths.js.dest));
 });
 
@@ -132,7 +125,7 @@ gulp.task("uglifyJS", ["concatJS"], function() {
 gulp.task("watch", function() {
   gulp.watch(paths.moveAssets.src, ["moveAssets"]);
   gulp.watch(paths.html.src, ["minifyHTML"]);
-  gulp.watch(paths.scss.watch, ["minifyCSS"]);
+  gulp.watch(paths.scss.watch, ["sassToCSS"]);
   gulp.watch(paths.js.src, ["concatJS"]);
 });
 
