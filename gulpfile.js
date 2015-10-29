@@ -7,7 +7,7 @@ var gulp = require("gulp"),
     bower = require("gulp-bower"),
     minifyCss = require("gulp-minify-css"),
     sourcemaps = require("gulp-sourcemaps"),
-    uncss = require('gulp-uncss'),
+    uncss = require("gulp-uncss"),
     rename = require("gulp-rename");
 
 var paths = {
