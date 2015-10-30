@@ -98,7 +98,7 @@ gulp.task("unCSS", ["sassToCSS"], function() {
     .pipe(uncss({
       html: paths.unCSSTask.html
     }))
-    .pipe(gulp.dest(paths.unCSSTask));
+    .pipe(gulp.dest(paths.unCSSTask.dest));
 });
 
 // minifies css
