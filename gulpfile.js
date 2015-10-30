@@ -19,11 +19,10 @@ var paths = {
     src: "./src/scss/style.scss",
     dest: "./www/css"
   },
-  // don't include './' in front in unCSSTask
   unCSSTask: {
-    src: "www/css/style.css",
-    html: "src/*.html",
-    dest: "www/css"
+    src: "./www/css/style.css",
+    html: ["./src/*.html"],
+    dest: "./www/css"
   },
   minifyCSS: {
     src: "./www/css/style.css",
@@ -77,7 +76,7 @@ gulp.task("bower", function() {
 });
 
 // minifies html 
-gulp.task("minifyHTML", function() {
+gulp.task("minifyHTML", ["moveHTML"], function() {
   return gulp.src(paths.html.src)
     .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest(paths.html.dest));
@@ -102,11 +101,11 @@ gulp.task("unCSS", ["sassToCSS"], function() {
 });
 
 // minifies css
-gulp.task("minifyCSS", function() {
+gulp.task("minifyCSS", ["unCSS"], function() {
   return gulp.src(paths.minifyCSS.src)
     .pipe(minifyCss())
-    .pipe(rename(paths.minifyCss.newName))
-    .pipe(gulp.dest(paths.minifyCss.dest));
+    .pipe(rename(paths.minifyCSS.newName))
+    .pipe(gulp.dest(paths.minifyCSS.dest));
 });
 
 // concat javascript
@@ -135,5 +134,5 @@ gulp.task("watch", function() {
 });
 
 // The default task (called when you run `gulp` from cli)
-gulp.task("build", ["moveAssets", "bower", "minifyHTML", "sassToCSS", "unCSS", "minifyCSS", "concatJS", "uglifyJS"]); /*compresses html, css, js*/
+gulp.task("build", ["moveAssets", "bower", "minifyHTML", "minifyCSS", "concatJS", "uglifyJS"]); /*compresses html, css, js*/
 gulp.task("default", ["moveAssets", "bower", "moveHTML", "sassToCSS", "unCSS", "concatJS", "watch"]);
