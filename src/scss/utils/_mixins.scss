@@ -1,0 +1,82 @@
+//---------------------------
+//
+// Mixins
+//
+//---------------------------
+
+//---------------------------
+//
+// Border radius mixin
+// ===================
+//
+// Extends the border-radius property to all browsers.
+// 
+// Usage:
+// @include border-radius(4px);
+//
+//---------------------------
+@mixin border-radius($radius) {
+	-webkit-border-radius: $radius;
+	-moz-border-radius: $radius;
+	-ms-border-radius: $radius;
+	border-radius: $radius;
+}
+
+//---------------------------
+//
+// Breakpoint mixin
+// ==============
+//
+// Breakpoints for small, medium, large, and extra-large devices.
+// 
+// Usage:
+// @include breakpoint(md) {
+//     display: none; 
+// }
+//
+//---------------------------
+@mixin breakpoint($breakpoint) {
+  @if $breakpoint == sm {
+    @media (max-width: rem(640)) {
+      @content;
+    }
+  }
+
+  @if $breakpoint == md {
+    @media (max-width: rem(48)) {
+      @content;
+    }
+  }
+
+  @if $breakpoint == lg {
+    @media (max-width: rem(1025)) {
+      @content;
+    }
+  }
+
+  @if $breakpoint == xl {
+    @media (max-width: rem(1921)) {
+      @content;
+    }
+  }
+}
+
+//---------------------------
+//
+// Property mixin
+// ==============
+//
+// Share values for multiple properties
+// 
+// Usage:
+// @include share(padding-top, padding-bottom, 23px);
+//
+// This was taken from: https://github.com/dropbox/scooter
+//
+//---------------------------
+@mixin share($props.../*, $value */) {
+  @for $i from 1 to length($props) {
+    #{nth($props, $i)}: nth($props, -1);
+  }
+}
+

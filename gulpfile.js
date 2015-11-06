@@ -1,28 +1,41 @@
+
+// Import node modules 
 var gulp = require("gulp"),
     sass = require("gulp-sass"),
     htmlmin = require("gulp-htmlmin"),
     watch = require("gulp-watch"),
     uglify = require("gulp-uglify"),
     concat = require("gulp-concat"),
-    bower = require("gulp-bower"),
     minifyCss = require("gulp-minify-css"),
     sourcemaps = require("gulp-sourcemaps"),
     uncss = require("gulp-uncss"),
     rename = require("gulp-rename");
 
+//---------------------------
+//
+// paths
+// =====
+//
+// Includes strings and arrays of source paths to files,
+// new file names for compiled files, and new directories
+// for those files.
+//
+//---------------------------
 var paths = {
   moveAssets: {
     src: "./assets/**/*",
-    dest: "www"
+    dest: "./www/assets"
   },
   sassToCSS: {
-    src: "./src/scss/style.scss",
+    src: "./src/scss/main.scss",
+    newName: "style.css",
     dest: "./www/css"
   },
-  unCSSTask: {
+  unCSS: {
     src: "./www/css/style.css",
     html: ["./src/*.html"],
-    dest: "./www/css"
+    dest: "./www/css",
+    ignore: []
   },
   minifyCSS: {
     src: "./www/css/style.css",
@@ -36,19 +49,15 @@ var paths = {
     src: "./www/js/script.js",
     newName: "script.min.js"
   },
-  bower: {
-    dest: "src/lib"
-  },
   html: {
     src: "./src/*.html",
     dest: "www"
   },
   scss: {
-    src: "./src/scss/style.scss", 
+    src: "./src/scss/main.scss", 
     dest: "./www/css",
     watch: [
-      "./src/scss/*.scss", 
-      "./src/scss/_*.scss"
+      "./src/scss/**/*.scss"
     ]
   },
   js: {
@@ -57,50 +66,105 @@ var paths = {
   }
 };
 
-// move contents of assets folder to www
+//---------------------------
+//
+// moveAssets
+// ========
+//
+// - Grabs all the directories (and all their files) from the src folder.
+// - Puts those directories in the www/assets folder.
+//
+//---------------------------
 gulp.task("moveAssets", function(){
   return gulp.src(paths.moveAssets.src)
     .pipe(gulp.dest(paths.moveAssets.dest));
 });
 
-// move html to www folder (not minified)
+//---------------------------
+//
+// moveHTML
+// ========
+//
+// - Grabs all the html files from the src folder.
+// - Puts them into the www folder.
+//
+//---------------------------
 gulp.task("moveHTML", function(){
   return gulp.src(paths.html.src)
     .pipe(gulp.dest(paths.html.dest));
 });
 
-// put bower components in lib folder
-gulp.task("bower", function() {
-  return bower()
-    .pipe(gulp.dest(paths.bower.dest));
-});
-
-// minifies html 
+//---------------------------
+//
+// minifyHTML
+// ==========
+//
+// - Runs the "moveHTML" task first, which will move all the
+//   html files from the src folder into the www folder.
+// - Grabs all the html files from the src folder.
+// - Runs the `htmlmin()` function.
+// - Puts those html files into the www folder.
+//
+//---------------------------
 gulp.task("minifyHTML", ["moveHTML"], function() {
   return gulp.src(paths.html.src)
     .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest(paths.html.dest));
 });
 
-// compiles sass to css
+//---------------------------
+//
+// sassToCSS
+// =========
+//
+// - Grabs the "main.css" file from the src folder.
+// - Initializes the sourcemaps.
+// - Runs the `sass()` function.
+// - Creates a sourcemap.
+// - Renames file to "style.css."
+// - Puts that css file into the css folder.
+//
+//---------------------------
 gulp.task("sassToCSS", function() {
   return gulp.src(paths.sassToCSS.src)
     .pipe(sourcemaps.init())
     .pipe(sass().on("error", sass.logError))
     .pipe(sourcemaps.write())
+    .pipe(rename(paths.sassToCSS.newName))
     .pipe(gulp.dest(paths.sassToCSS.dest));
 });
 
-// removes unused css rules
+//---------------------------
+//
+// unCSS
+// =====
+//
+// - Runs the "sassToCSS" task first, which will compile
+//   the sass to css.
+// - Grabs the style.css file.
+// - Runs the `uncss()` function.
+// - Puts that css file into the css folder.
+//
+//---------------------------
 gulp.task("unCSS", ["sassToCSS"], function() {
-  return gulp.src(paths.unCSSTask.src)
-    .pipe(uncss({
-      html: paths.unCSSTask.html
-    }))
-    .pipe(gulp.dest(paths.unCSSTask.dest));
+  return gulp.src(paths.unCSS.src)
+    .pipe(uncss({html:paths.unCSS.src.html,ignore:paths.unCSS.ignore}))
+    .pipe(gulp.dest(paths.unCSS.dest));
 });
 
-// minifies css
+//---------------------------
+//
+// minifyCSS
+// =========
+//
+// - Runs the "unCSS" task first, which will remove all 
+//   the unused css rules.
+// - Grabs the style.css file.
+// - Runs the `minifyCss()` function.
+// - Renames the file to "style.min.css."
+// - Puts that css file into the css folder.
+//
+//---------------------------
 gulp.task("minifyCSS", ["unCSS"], function() {
   return gulp.src(paths.minifyCSS.src)
     .pipe(minifyCss())
@@ -108,7 +172,19 @@ gulp.task("minifyCSS", ["unCSS"], function() {
     .pipe(gulp.dest(paths.minifyCSS.dest));
 });
 
-// concat javascript
+//---------------------------
+//
+// ConcatJS
+// ========
+//
+// - Grabs all the js files from the js array.
+// - Runs the `sourcemaps.init()` function.
+// - Calls the `concat()` function which will combine all the
+//   javascript files into one javascript file named "script.js."
+// - Writes a sourcemap.
+// - Puts that large javascript file into the js folder.
+//
+//---------------------------
 gulp.task("concatJS", function() {
   return gulp.src(paths.js.src)
     .pipe(sourcemaps.init())
@@ -117,7 +193,20 @@ gulp.task("concatJS", function() {
     .pipe(gulp.dest(paths.js.dest));
 });
 
-// uglify javascript and rename
+//---------------------------
+//
+// UglifyJS
+// ========
+//
+// - Runs the "concatJS" task first, which will create a big javascript
+//   file from the array of smaller javascript files.
+// - Grabs the "script.js" file.
+// - Runs the `Uglify()` function which significantly 
+//   compresses the hell out of the javascript file. 
+// - Renames the file to "script.min.js."
+// - Puts that compressed file into the js folder.
+//
+//---------------------------
 gulp.task("uglifyJS", ["concatJS"], function() {
   return gulp.src(paths.uglifyJS.src)
     .pipe(uglify())
@@ -125,14 +214,39 @@ gulp.task("uglifyJS", ["concatJS"], function() {
     .pipe(gulp.dest(paths.js.dest));
 });
 
-// watch for changes
+//---------------------------
+//
+// Watch
+// =====
+//
+// Watches for changes.
+// Example : gulp.watch("./path/to/file/", ["tasks", "to", "run", "when", "file", "is", "modified"])
+//
+//---------------------------
 gulp.task("watch", function() {
   gulp.watch(paths.moveAssets.src, ["moveAssets"]);
-  gulp.watch(paths.html.src, ["minifyHTML"]);
+  gulp.watch(paths.html.src, ["moveHTML"]);
   gulp.watch(paths.scss.watch, ["sassToCSS"]);
   gulp.watch(paths.js.src, ["concatJS"]);
 });
 
-// The default task (called when you run `gulp` from cli)
-gulp.task("build", ["moveAssets", "bower", "minifyHTML", "minifyCSS", "concatJS", "uglifyJS"]); /*compresses html, css, js*/
-gulp.task("default", ["moveAssets", "bower", "moveHTML", "sassToCSS", "unCSS", "concatJS", "watch"]);
+//---------------------------
+//
+// Default task
+// ============
+// 
+// - Called when you run `gulp` from cli.
+//
+//---------------------------
+gulp.task("default", ["moveAssets", "moveHTML", "sassToCSS", "concatJS", "watch"]);
+
+//---------------------------
+//
+// Build task
+// ==========
+// 
+// - Compresses html, css, and javascript.
+// - Removed unused css rules.
+//
+//---------------------------
+gulp.task("build", ["moveAssets", "minifyHTML", "minifyCSS", "concatJS", "uglifyJS"]);

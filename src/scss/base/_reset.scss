@@ -1,0 +1,37 @@
+//---------------------------
+//
+// Reset
+//
+//---------------------------
+
+*, ::after, ::before {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  box-sizing: inherit;
+}
+
+input, button, textarea, select {
+  font: inherit;
+  appearance: none;
+}
+
+input[type="checkbox"] {
+  appearance: checkbox;
+}
+
+input[type="radio"] {
+  appearance: radio;
+}
+
+ul, ol {
+  margin-left: double($baseline);
+}
+
+p {
+  margin-bottom: $baseline;
+}
+
+table {
+  border-collapse: collapse;
+}
