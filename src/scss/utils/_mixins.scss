@@ -36,25 +36,25 @@
 //
 //---------------------------
 @mixin breakpoint($breakpoint) {
-  @if $breakpoint == sm {
+  @if $breakpoint == "sm" {
     @media (max-width: rem(640)) {
       @content;
     }
   }
 
-  @if $breakpoint == md {
-    @media (max-width: rem(48)) {
+  @if $breakpoint == "md" {
+    @media (max-width: rem(768)) {
       @content;
     }
   }
 
-  @if $breakpoint == lg {
+  @if $breakpoint == "lg" {
     @media (max-width: rem(1025)) {
       @content;
     }
   }
 
-  @if $breakpoint == xl {
+  @if $breakpoint == "xl" {
     @media (max-width: rem(1921)) {
       @content;
     }
