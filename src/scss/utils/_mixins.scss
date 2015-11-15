@@ -10,16 +10,29 @@
 // ===================
 //
 // Extends the border-radius property to all browsers.
+// If no radius is given, it will default to 4px.
 // 
 // Usage:
-// @include border-radius(4px);
+// @include border-radius("top left", 5px);
+// @include border-radius("top right", 5px);
+// @include border-radius("bottom left", 5px);
+// @include border-radius("bottom right", 5px);
+// @include border-radius("all", 5px);
 //
 //---------------------------
-@mixin border-radius($radius) {
-	-webkit-border-radius: $radius;
-	-moz-border-radius: $radius;
-	-ms-border-radius: $radius;
-	border-radius: $radius;
+@mixin border-radius($side: null, $radius: 4px) {
+  $t: "top"; $l: "left"; $b: "bottom"; $r: "right";
+  $tb: str-index($side, $t);  $lr: str-index($side, $l);
+  @if ($side == "top left" or $side == "top right" or $side == "bottom left" or $side == "bottom right") {
+    -webkit-border-#{if($tb, $t, $b)}-#{if($lr, $l, $r)}-radius: $radius;
+    -moz-border-radius-#{if($tb, $t, $b)}#{if($lr, $l, $r)}: $radius;
+    border-#{if($tb, $t, $b)}-#{if($lr, $l, $r)}-radius: $radius;
+  } @else {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    border-radius: $radius;
+  }
 }
 
 //---------------------------
