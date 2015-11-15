@@ -148,7 +148,7 @@ gulp.task("sassToCSS", function() {
 //---------------------------
 gulp.task("unCSS", ["sassToCSS"], function() {
   return gulp.src(paths.unCSS.src)
-    .pipe(uncss({html:paths.unCSS.src.html,ignore:paths.unCSS.ignore}))
+    .pipe(uncss({html:paths.unCSS.html,ignore:paths.unCSS.ignore}))
     .pipe(gulp.dest(paths.unCSS.dest));
 });
 
