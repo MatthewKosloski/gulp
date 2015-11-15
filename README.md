@@ -2,7 +2,7 @@
 This is my starting point with [Gulp](http://gulpjs.com/) for static websites.  
 
 Inspired by:
-- Hugo Giraudel's [7-1 architecture pattern](http://sass-guidelin.es/#the-7-1-pattern)
+- Hugo Giraudel's [7-1 architecture pattern](http://sass-guidelin.es/#the-7-1-pattern).
 - Dropbox's [Scooter](https://github.com/dropbox/scooter) SCSS framework.
 
 ## Installation
