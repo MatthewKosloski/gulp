@@ -1,18 +1,12 @@
 //---------------------------
 //
-// Vendors
-// =======
+// Vendor
+// ======
 //
 // Most projects will have a vendors folder containing all the CSS files from external
-// libraries and frameworks – Normalize, Bootstrap, jQueryUI, and so on. Putting those
+// libraries and frameworks – Normalize, Bootstrap, jQueryUI, and so on.
 //
 // Putting those aside in the same folder is a good way to say, “Hey, this is not from me, 
 // not my code, not my responsibility.”
 //
 //---------------------------
-
-
-// Import Bower components
-@import
-	"./bower_components/normalize-scss/_normalize.scss",
-	"./bower_components/bourbon/app/assets/stylesheets/bourbon";
