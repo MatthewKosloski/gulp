@@ -1,29 +1,33 @@
 'use strict';
 
-var gulp = require('gulp');
-var cssnano = require('gulp-cssnano');
-var sourcemaps = require('gulp-sourcemaps');
-var postcss = require('gulp-postcss');
-var sourcemaps = require('gulp-sourcemaps');
-var autoprefixer = require('autoprefixer');
-var rename = require('gulp-rename');
-var sass = require('gulp-sass');
-var htmlmin = require('gulp-htmlmin');
+import gulp from 'gulp';
+import cssnano from 'gulp-cssnano';
+import sourcemaps from 'gulp-sourcemaps';
+import postcss from 'gulp-postcss';
+import autoprefixer from 'autoprefixer';
+import rename from 'gulp-rename';
+import sass from 'gulp-sass';
+import concat from 'gulp-concat';
+import htmlmin from 'gulp-htmlmin';
+import babel from 'gulp-babel';
 
+// import { create as browserSync } from 'browser-sync'; <- not working
 var browserSync = require('browser-sync').create();
 
-gulp.task('html', function() {
+// HTML
+gulp.task('html', () => {
     return gulp.src('./src/*.html')
         .pipe(gulp.dest('./public'));
 });
-
-gulp.task('htmlmin', ['html'], function() {
+gulp.task('htmlmin', ['html'], () => {
   return gulp.src('public/*.html')
     .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest('./public'));
 });
 
-gulp.task('scss', function() {
+
+// CSS
+gulp.task('scss', () => {
     return gulp.src('./src/scss/main.scss')
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
@@ -32,18 +36,29 @@ gulp.task('scss', function() {
         .pipe(gulp.dest('./public/css'))
         .pipe(browserSync.stream());
 });
-
-gulp.task('cssnano', ['scss'], function() {
+gulp.task('cssnano', ['scss'], () => {
     return gulp.src('./public/css/main.css')
         .pipe(cssnano())
         .pipe(rename('main.min.css'))
         .pipe(gulp.dest('./public/css'));
 });
 
-gulp.task('serve', ['html', 'scss'], function() {
+// JavaScript
+gulp.task('babel', function () {
+  return gulp.src(['src/js/app.js'])
+    .pipe(sourcemaps.init())
+    .pipe(babel())
+    .pipe(concat('app.js'))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('./public/js'))
+    .pipe(browserSync.stream());
+});
+
+gulp.task('serve', ['html', 'scss', 'babel'], () => {
     browserSync.init({ server: './public' });
 
     gulp.watch('./src/scss/**/*.scss', ['scss']);
+    gulp.watch('./src/js/**/*.js', ['babel']);
     gulp.watch('./src/*.html', ['html']).on('change', browserSync.reload);
 });
 

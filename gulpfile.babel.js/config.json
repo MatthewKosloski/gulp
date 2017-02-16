@@ -1,0 +1,28 @@
+{
+	"root": {
+		"src": "./src",
+		"dest": "./public"
+	},
+	"tasks": {
+		"html": {
+			"src": "*.html" 
+		},
+		"htmlmin": {
+			"src": "*.html"
+		},
+		"scss": {
+			"src": "scss/main.scss",
+			"dest": "css"
+		},
+		"cssnano": {
+			"src": "css/main.scss",
+			"rename": "main.min.css",
+			"dest": "css"
+		},
+		"babel": {
+			"src": "js/app.js",
+			"concat": "app.js",
+			"dest": "js"
+		}	
+	}
+}
