@@ -4,19 +4,23 @@
 //
 //---------------------------
 
-h1 {
+h1,
+.heading-one {
 	@include typi($h1-map);
 }
 
-h2 {
+h2,
+.heading-two {
 	@include typi($h2-map);
 }
 
-h3 {
+h3,
+.heading-three {
 	@include typi($h3-map);
 }
 
-h4 {
+h4,
+.heading-four {
 	@include typi($h4-map);
 }
 

@@ -10,7 +10,31 @@
 	}
 }
 
-.col-sm-6 {
-	flex: 1 0 50%;
-	max-width: 50%;
+@function getColWidth($col) {
+	@return $col / 12 * 100%;
+}
+
+@each $size in $gridSizes {
+  
+	@if $size == 'sm' {
+		@each $col in $gridCols {
+			$width: getColWidth($col);
+			.col-#{$size}-#{$col} {
+				flex: 1 0 $width;
+				max-width: $width;
+			}
+		}
+	}
+  
+	@else {
+		@include breakpoint($size) {
+			@each $col in $gridCols {
+				$width: getColWidth($col);
+				.col-#{$size}-#{$col} {
+					flex: 1 0 $width;
+					max-width: $width;
+				}
+			}
+		}
+	}
 }
