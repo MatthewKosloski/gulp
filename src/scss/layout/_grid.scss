@@ -1,0 +1,16 @@
+.row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin-left: -10px;
+	margin-right: -10px;
+	[class*="col"] {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+}
+
+.col-sm-6 {
+	flex: 1 0 50%;
+	max-width: 50%;
+}

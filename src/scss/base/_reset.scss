@@ -12,3 +12,12 @@
     position: relative;
     box-sizing: inherit;
 }
+
+input, 
+button, 
+textarea, 
+select {
+    font: inherit;
+    appearance: none;
+    outline: none;
+}

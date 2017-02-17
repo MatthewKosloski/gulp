@@ -1,0 +1,25 @@
+@function strip-unit($unit) {
+	@return $unit / ($unit * 0 + 1);
+}
+
+@function rem($size) {
+	@return $size / strip-unit($base) + 0rem;
+}
+
+@function pow($number, $exponent) {
+	$value: 1;
+	@if $exponent > 0 {
+		@for $i from 1 through $exponent {
+			$value: $value * $number;
+		}
+	}
+	@return $value;
+}
+
+@function strip-unit($unit) {
+	@return $unit / ($unit * 0 + 1);
+}
+
+@function scale($step) {
+	@return strip-unit($base)*pow($baseline, $step) + 0px;
+}

@@ -7,3 +7,11 @@
 	'layout/index',
 	'components/index',
 	'pages/index';
+
+.container {
+	width: 768px;
+	max-width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 0 10px;
+}

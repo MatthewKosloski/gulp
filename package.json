@@ -26,5 +26,10 @@
     "gulp-sourcemaps": "^2.4.1",
     "gulp-uglify": "^2.0.1",
     "pump": "^1.0.2"
+  },
+  "dependencies": {
+    "modularscale-sass": "^2.1.1",
+    "normalize.css": "^5.0.0",
+    "typi": "^2.3.0"
   }
 }
