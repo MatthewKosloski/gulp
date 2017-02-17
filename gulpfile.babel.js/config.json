@@ -1,5 +1,5 @@
 {
-	"root": {
+	"paths": {
 		"src": "./src",
 		"dest": "./public"
 	},
@@ -20,8 +20,13 @@
 			"dest": "css"
 		},
 		"babel": {
-			"src": "js/app.js",
+			"srcs": ["./src/js/app.js"],
 			"concat": "app.js",
+			"dest": "js"
+		},
+		"uglify": {
+			"src": "js/app.js",
+			"rename": "app.min.js",
 			"dest": "js"
 		}	
 	}
