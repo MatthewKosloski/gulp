@@ -32,12 +32,8 @@ gulp.task('handlebars', () => {
 }); 
 
 // HTML
-gulp.task('html', () => {
-    return gulp.src(path.join(src, tasks.html.src))
-        .pipe(gulp.dest(dest));
-});
-gulp.task('htmlmin', ['html'], () => {
-  return gulp.src(path.join(src, tasks.htmlmin.src))
+gulp.task('htmlmin', ['handlebars'], () => {
+  return gulp.src(tasks.htmlmin.src)
     .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest(dest));
 });
@@ -89,8 +85,7 @@ gulp.task('serve', ['handlebars', 'scss', 'babel'], () => {
 
     gulp.watch('./src/scss/**/*.scss', ['scss']);
     gulp.watch('./src/js/**/*.js', ['babel']);
-    // gulp.watch('./src/*.html', ['html']).on('change', browserSync.reload);
-    gulp.watch('./src/pages/*.hbs', ['handlebars']).on('change', browserSync.reload);
+    gulp.watch(['./src/pages/*.hbs', './src/partials/**/*.hbs'], ['handlebars']).on('change', browserSync.reload);
 });
 
 gulp.task('default', ['serve']);
