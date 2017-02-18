@@ -5,6 +5,7 @@ import cssnano from 'gulp-cssnano';
 import sourcemaps from 'gulp-sourcemaps';
 import postcss from 'gulp-postcss';
 import autoprefixer from 'autoprefixer';
+import handlebars from 'gulp-compile-handlebars';
 import rename from 'gulp-rename';
 import sass from 'gulp-sass';
 import concat from 'gulp-concat';
@@ -20,6 +21,15 @@ const browserSync = require('browser-sync').create();
 
 const { paths, tasks } = config;
 const { src, dest } = paths;
+
+// Handlebars
+gulp.task('handlebars', () => {
+    return gulp.src(tasks.handlebars.src)
+        .pipe(handlebars(tasks.handlebars.data, tasks.handlebars.options))
+        .pipe(rename(tasks.handlebars.rename))
+        .pipe(gulp.dest(dest))
+        .pipe(browserSync.stream());
+}); 
 
 // HTML
 gulp.task('html', () => {
@@ -70,7 +80,7 @@ gulp.task('uglify', ['babel'], (cb) => {
     );
 });
 
-gulp.task('serve', ['html', 'scss', 'babel'], () => {
+gulp.task('serve', ['handlebars', 'scss', 'babel'], () => {
     browserSync.init({ 
         server: './public',
         open: false, // don't open tab in browser
@@ -79,7 +89,8 @@ gulp.task('serve', ['html', 'scss', 'babel'], () => {
 
     gulp.watch('./src/scss/**/*.scss', ['scss']);
     gulp.watch('./src/js/**/*.js', ['babel']);
-    gulp.watch('./src/*.html', ['html']).on('change', browserSync.reload);
+    // gulp.watch('./src/*.html', ['html']).on('change', browserSync.reload);
+    gulp.watch('./src/pages/*.hbs', ['handlebars']).on('change', browserSync.reload);
 });
 
 gulp.task('default', ['serve']);

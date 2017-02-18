@@ -4,6 +4,15 @@
 		"dest": "./public"
 	},
 	"tasks": {
+		"handlebars": {
+			"src": "./src/pages/*.hbs",
+			"data": {
+			},
+			"options": {
+				"batch": ["./src/partials"]
+			},
+			"rename": {"extname": ".html"}
+		},
 		"html": {
 			"src": "*.html" 
 		},

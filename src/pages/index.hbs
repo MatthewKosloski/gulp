@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html lang="en-US"> 
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Hello World!</title>
-        <link rel="stylesheet" href="./css/main.css">
-    </head>
-    <body>
-        <section class="home">
+{{#> layouts/base title="Homepage"}}
+	{{#*inline "content"}}
+ 		<section class="home">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
@@ -62,7 +55,5 @@
                 </div>
             </div>
         </section>
-    <script src="./js/app.js"></script> 
-    </body>
-</html>
-        
+ 	{{/inline}}
+{{/layouts/base}}
