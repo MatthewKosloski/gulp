@@ -1,8 +1,0 @@
-.home {
-	@include breakpoint(md) {
-		padding: vr(3.5) 0;
-		.row {
-			padding: vr(1) 0;
-		}
-	}
-}
